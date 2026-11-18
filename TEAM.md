@@ -5,7 +5,7 @@
 - Tên nhóm: OK
 - Lớp: `L3A`
 - Repo của bàn: `K5-L3A-DAY10-OK-PoCtoPilotGate1`
-- Thẻ sự cố đã bốc (S1–S8):
+- Thẻ sự cố đã bốc (S1–S8): S6
 
 ## Thành viên
 
