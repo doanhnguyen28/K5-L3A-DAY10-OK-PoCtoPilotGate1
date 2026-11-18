@@ -1,8 +1,8 @@
 {
- "run_id": "R-S6-grade-20261118-172831-a71aa5",
+ "run_id": "R-S6-grade-20261118-220706-91324e",
  "incident": "S6",
  "grader_version": "lab10-1.0",
- "code_hash": "a71aa591bd4606137ff6cad651d521038f00f7017cb6a0a2e9d34d7543dcea7f",
+ "code_hash": "91324e1e5eef0aaa98a9f0ab5bb28acdbb1e7e1524cdb9b3d6b7bea697d6286d",
  "integrity": {
   "ok": true,
   "changed": [],
@@ -24,10 +24,10 @@
   "status": "khớp"
  },
  "checkpoint": {
-  "ok": false,
+  "ok": true,
   "taken": true,
   "hash": "492fc0b74bd8f011e21cda348869d4a2e28dbea219c5c47ae0bbbe20983d8577",
-  "problem": "bản chốt vòng 1 ĐÃ BỊ SỬA sau khi chốt",
+  "problem": null,
   "taken_at": "2026-11-18T17:03:36"
  },
  "before": {
@@ -1290,9 +1290,9 @@
   }
  },
  "run_ids": {
-  "before": "R-S6-before-20261118-172831-a71aa5",
-  "prepared": "R-S6-prepared-20261118-172831-a71aa5",
-  "after": "R-S6-after-20261118-172831-a71aa5"
+  "before": "R-S6-before-20261118-220706-91324e",
+  "prepared": "R-S6-prepared-20261118-220707-91324e",
+  "after": "R-S6-after-20261118-220707-91324e"
  },
  "visible": {
   "before_red": true,
@@ -1389,5 +1389,5 @@
  "hard_gates_ok": true,
  "score": null,
  "verdict": "PASS-VISIBLE (chưa chạy test ẩn)",
- "seconds": 0.393
+ "seconds": 0.46
 }

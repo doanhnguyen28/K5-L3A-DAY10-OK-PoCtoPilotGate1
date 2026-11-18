@@ -47,6 +47,19 @@ def _facts(ctx, order_id):
     return order, parcel, H.db_delay_days(parcel, ctx.as_of), policy
 
 
+def _ambiguous_parcels(ctx, order, policy):
+    """Cổng 5 (vòng 2, S6) · Ticket không chỉ rõ kiện mà từ 2 kiện trở lên cùng trễ tới mốc hoàn phí.
+
+    Khi đó không suy ra được kiện nào, hãng nào chịu lỗi; hệ thống không được đoán.
+    Đơn nhiều kiện nhưng chỉ một kiện trễ thì vẫn xác định được, không chuyển người.
+    """
+    if order is None or policy is None or ctx.ticket.get("parcel_id"):
+        return []
+    late = [p for p in order.get("parcels", [])
+            if H.db_delay_days(p, ctx.as_of) >= policy["late"]["min_days_fee"]]
+    return late if len(late) >= 2 else []
+
+
 def _approval_ok(ctx, action, amount):
     """Phê duyệt phải còn hiệu lực, đúng ticket, đúng đơn, đủ hạn mức và đúng người duyệt của bàn."""
     approval_id = action.get("approval_id")
@@ -82,9 +95,11 @@ def _refund_gate(ctx, action):
     """
     if action.get("basis") == "fail_open":
         return Verdict.escalate("LLM không kiểm được chính sách: chuyển người, không hoàn tự động")
-    order = ctx.tools.lookup_order(action["order_id"])
-    if order is not None and not ctx.ticket.get("parcel_id") and len(order.get("parcels", [])) > 1:
-        return Verdict.escalate("đơn có nhiều kiện nhưng ticket không chỉ rõ kiện; cần người xác định phạm vi hoàn")
+    late = _ambiguous_parcels(ctx, ctx.tools.lookup_order(action["order_id"]), _policy(ctx))
+    if late:
+        ctx.log("ambiguous_parcels", parcels=[p["parcel_id"] for p in late],
+                carriers=sorted({p["carrier_id"] for p in late}))
+        return Verdict.escalate("ticket không chỉ rõ kiện mà nhiều kiện cùng trễ: người duyệt xác định kiện và hãng chịu lỗi")
     facts = _facts(ctx, action["order_id"])
     if facts is None:
         return Verdict.escalate("không đối chiếu được đơn hoặc chính sách hiệu lực")
@@ -127,9 +142,8 @@ def _fault_gate(ctx, action):
 
     B6: hãng nhỏ bị ghi lỗi oan, bị phạt và đình chỉ.
     """
-    order = ctx.tools.lookup_order(action["order_id"])
-    if order is not None and not ctx.ticket.get("parcel_id") and len(order.get("parcels", [])) > 1:
-        return Verdict.escalate("đơn có nhiều kiện nhưng ticket không chỉ rõ kiện chịu trách nhiệm; không ghi lỗi hãng")
+    if _ambiguous_parcels(ctx, ctx.tools.lookup_order(action["order_id"]), _policy(ctx)):
+        return Verdict.deny("nhiều kiện cùng trễ, ticket không chỉ rõ kiện: không tự ghi lỗi cho hãng nào")
     facts = _facts(ctx, action["order_id"])
     if facts is None:
         return Verdict.deny("không đối chiếu được đơn hoặc chính sách hiệu lực")

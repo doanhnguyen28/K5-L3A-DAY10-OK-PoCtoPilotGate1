@@ -7,10 +7,10 @@
   ],
   "incident": "S6",
   "decision_v1": "Tiếp tục",
-  "decision_v2": "Cải tiến thêm",
+  "decision_v2": "Thu hẹp",
   "three_lines": {
-    "environment_assumption": "Tracking lưu parcel_id, carrier_id, ngày hẹn/giao và delay_cause chính xác; người duyệt có thể phân giải ticket đa kiện thiếu mã kiện.",
-    "reduce_or_prevent": "Guard ngăn lệnh ghi tự động khi order có nhiều parcel mà ticket thiếu parcel_id; nó chỉ giảm rủi ro tổng thể vì người duyệt hoặc tracking vẫn có thể sai.",
-    "measure_in_pilot": "Đo tỉ lệ ticket đa kiện mơ hồ, độ chính xác fault theo từng parcel/carrier, thời gian chờ người duyệt và kiểm toán hoàn tiền/PII bằng hồ sơ thật trước Gate 2."
+    "environment_assumption": "Tracking ghi đúng hãng, ngày giao và delay_cause cho từng kiện của đơn tách kiện, và khách có thể chỉ ra kiện mình khiếu nại. Ngoài thực tế, điểm phát của hãng nhỏ có thể quét gộp hoặc ghi nhầm nguyên nhân giữa các kiện, và khách thường chỉ nói \"đơn của tôi\" (2/12 ticket gói S6, 16,7%, không nêu kiện trong khi từ 2 kiện cùng trễ).",
+    "reduce_or_prevent": "Với nhánh hệ thống tự đoán kiện khi nhiều kiện cùng trễ, cổng NGĂN được việc tự động ghi tiền và ghi lỗi: _ambiguous_parcels chạy trước lệnh ghi đầu tiên và chỉ dựa vào tracking (S6 after: S6-20, S6-21 chuyển người, 0đ, 0 lỗi; lỗi oan cả gói 40 → 0). Với tác hại chung 'hãng bị ghi lỗi oan', cổng chỉ GIẢM khả năng: mọi cổng đều tin tracking là đúng, người duyệt nhận ca đa kiện vẫn có thể chọn nhầm kiện, và trần 2 lỗi/hãng/ngày không chặn được 3 lỗi trong 7 ngày.",
+    "measure_in_pilot": "Đo lại: tỉ lệ thật của ticket đơn tách kiện không nêu kiện (mock 16,7%) và số phút NV-HANH cần để xác định kiện cho một ca như vậy (mock giả định 10 phút/ca); tỉ lệ đúng của delay_cause và carrier_id theo từng hãng khi đối soát lấy mẫu 10% lỗi hãng mỗi tuần với điều phối hãng; số lỗi bị hãng khiếu nại thành công mỗi tuần (mục tiêu 0 trong 2 tuần); chi phí mỗi ticket thật (mock 6.862đ, sát trần 7.000đ)."
   }
 }
