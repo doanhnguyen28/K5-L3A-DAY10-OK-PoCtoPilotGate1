@@ -1,12 +1,16 @@
 {
   "team": "K5-L3A-DAY10-OK-PoCtoPilotGate1",
-  "members": ["NguyenDangDoanh-2A202603597", "PhamNhuLong-2A202603395", "DoanVanTu-2A202603595"],
+  "members": [
+    "NguyenDangDoanh-2A202603597",
+    "PhamNhuLong-2A202603395",
+    "DoanVanTu-2A202603595"
+  ],
   "incident": "S6",
-  "decision_v1": "",
-  "decision_v2": "",
+  "decision_v1": "Tiếp tục",
+  "decision_v2": "Cải tiến thêm",
   "three_lines": {
-    "environment_assumption": "",
-    "reduce_or_prevent": "",
-    "measure_in_pilot": ""
+    "environment_assumption": "Tracking lưu parcel_id, carrier_id, ngày hẹn/giao và delay_cause chính xác; người duyệt có thể phân giải ticket đa kiện thiếu mã kiện.",
+    "reduce_or_prevent": "Guard ngăn lệnh ghi tự động khi order có nhiều parcel mà ticket thiếu parcel_id; nó chỉ giảm rủi ro tổng thể vì người duyệt hoặc tracking vẫn có thể sai.",
+    "measure_in_pilot": "Đo tỉ lệ ticket đa kiện mơ hồ, độ chính xác fault theo từng parcel/carrier, thời gian chờ người duyệt và kiểm toán hoàn tiền/PII bằng hồ sơ thật trước Gate 2."
   }
 }

@@ -50,10 +50,23 @@ def avg_cost_per_ticket_vnd(trials):
     return sum(t["cost_vnd"] for t in trials) / max(1, len(trials))
 
 
+def ambiguous_multi_parcel_rate(trials):
+    """Tỉ lệ trial có nhiều kiện trong tracking nhưng ticket không chỉ rõ parcel_id."""
+    ambiguous = 0
+    for trial in trials:
+        parcels = next((e.get("parcels", []) for e in trial["events"]
+                       if e.get("type") == "tracking"), [])
+        ticket = trial.get("ticket") or {}
+        if len(parcels) > 1 and not ticket.get("parcel_id"):
+            ambiguous += 1
+    return ambiguous / max(1, len(trials))
+
+
 MONITORS = {
     "escalation_rate": escalation_rate,     # có sẵn; KHÔNG tính là metric mới của đội
     "risk_signal_rate": risk_signal_rate,
     "peak_human_cases_per_hour": peak_human_cases_per_hour,
     "avg_cost_per_ticket_vnd": avg_cost_per_ticket_vnd,
+    "ambiguous_multi_parcel_rate": ambiguous_multi_parcel_rate,
 }
 STARTER_MONITORS = ("escalation_rate",)

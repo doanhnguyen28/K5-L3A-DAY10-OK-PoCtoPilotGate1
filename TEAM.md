@@ -41,30 +41,48 @@ Vai Sản phẩm và kinh doanh + Vận hành và pháp lý.
 
 ### Bằng chứng
 
-- Commit `Sign acceptance criteria`: `_______`
-- Mã lần chạy dùng cho B8 / C12: `__________`
+- Commit `Sign acceptance criteria`: `142672c`
+- Mã lần chạy cuối dùng cho C12: `R-S6-grade-20261118-172831-a71aa5`
 - Phiếu A mục A1–A5; Phiếu B mục B3–B8; Phiếu C mục C1, C3–C5, C10–C12.
 
 ### Exit ticket
 
-`<Một điều học được, một điều còn chưa chắc — tự viết cuối buổi>`
+`[Nguyễn Đăng Doanh tự bổ sung một điều học được và một điều còn chưa chắc.]`
 
 Có dùng trợ lý AI (Claude) để đọc code, đề xuất bản nháp phiếu và ngưỡng; các con số đã được bàn soát lại và giải thích được.
 
-## HoVaTen-MSSV
+## PhamNhuLong-2A202603395
 
 ### Phần việc phụ trách
 
-Vai trong bàn; câu nào của đề, mục nào của phiếu A/B/C, file nào (`lab10/guards.py`, `config/operating_gates.json`, …).
+Vai Kỹ sư cổng; câu 1.3, 2.1–2.2, 2.6–2.8, 3.1, 3.4–3.6; phụ trách `lab10/guards.py`, `lab10/monitors.py` và chạy eval/trace/grade/check_submission.
 
 ### Đóng góp cụ thể
 
-...
+Lịch sử repo ghi nhận các thay đổi guard và monitor vòng 1; phần tiếp nối S6 thêm chuyển người duyệt khi ticket thiếu parcel_id trên đơn đa kiện và monitor `ambiguous_multi_parcel_rate`.
 
 ### Bằng chứng
 
-Mã commit, mã lần chạy (`runs/<mã>`), dòng trong phiếu.
+Commit: `0ae691f`, `7b53a05`, `56c3601`; mã grade cuối: `R-S6-grade-20261118-172831-a71aa5`; Phiếu C mục C2, C4, C7–C9.
 
 ### Exit ticket
 
-Một điều học được, một điều còn chưa chắc.
+`[Phạm Như Long tự bổ sung một điều học được và một điều còn chưa chắc.]`
+
+## DoanVanTu-2A202603595
+
+### Phần việc phụ trách
+
+Vai Vận hành và pháp lý; câu 1.2, 1.4, 2.4, 2.10, 3.3, 3.7; mục `operations`/`legal` trong `config/operating_gates.json` và `submission/submission.json`.
+
+### Đóng góp cụ thể
+
+Theo bảng phân công, phụ trách PIC/người duyệt, điều kiện dừng, quyền riêng tư, runbook và phần nộp. Nhóm đã ghi các nội dung vận hành/pháp lý trong config và Phiếu C; cần Tú xác nhận phần việc cá nhân thực tế.
+
+### Bằng chứng
+
+`config/operating_gates.json`; Phiếu B mục B7.5–B7.6; Phiếu C mục C10–C11; mã grade cuối `R-S6-grade-20261118-172831-a71aa5`.
+
+### Exit ticket
+
+`[Đoàn Văn Tú tự bổ sung một điều học được và một điều còn chưa chắc.]`

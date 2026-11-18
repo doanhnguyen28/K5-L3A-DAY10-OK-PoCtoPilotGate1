@@ -82,6 +82,9 @@ def _refund_gate(ctx, action):
     """
     if action.get("basis") == "fail_open":
         return Verdict.escalate("LLM không kiểm được chính sách: chuyển người, không hoàn tự động")
+    order = ctx.tools.lookup_order(action["order_id"])
+    if order is not None and not ctx.ticket.get("parcel_id") and len(order.get("parcels", [])) > 1:
+        return Verdict.escalate("đơn có nhiều kiện nhưng ticket không chỉ rõ kiện; cần người xác định phạm vi hoàn")
     facts = _facts(ctx, action["order_id"])
     if facts is None:
         return Verdict.escalate("không đối chiếu được đơn hoặc chính sách hiệu lực")
@@ -124,6 +127,9 @@ def _fault_gate(ctx, action):
 
     B6: hãng nhỏ bị ghi lỗi oan, bị phạt và đình chỉ.
     """
+    order = ctx.tools.lookup_order(action["order_id"])
+    if order is not None and not ctx.ticket.get("parcel_id") and len(order.get("parcels", [])) > 1:
+        return Verdict.escalate("đơn có nhiều kiện nhưng ticket không chỉ rõ kiện chịu trách nhiệm; không ghi lỗi hãng")
     facts = _facts(ctx, action["order_id"])
     if facts is None:
         return Verdict.deny("không đối chiếu được đơn hoặc chính sách hiệu lực")
