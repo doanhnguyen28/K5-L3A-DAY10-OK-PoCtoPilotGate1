@@ -19,7 +19,41 @@ def escalation_rate(trials):
     return sum(t["status"] == "escalated" for t in trials) / max(1, len(trials))
 
 
+def _has_risk_signal(trial):
+    for e in trial["events"]:
+        if e["type"] == "model_override" and e.get("db") != e.get("ticket"):
+            return True                                  # số ngày trong ticket đè lên số trong DB
+        if e["type"] in ("directive_obeyed", "write_retry", "llm_fallback"):
+            return True                                  # làm theo chữ khách, ghi lặp, LLM lỗi phải chạy dự phòng
+        if e["type"] == "tracking" and not e.get("cause_recorded", True):
+            return True                                  # đơn trễ mà tracking không ghi nguyên nhân
+    return False
+
+
+def risk_signal_rate(trials):
+    """Kỹ thuật: tỉ lệ lần chạy có ít nhất một dấu hiệu rủi ro trong trace."""
+    return sum(_has_risk_signal(t) for t in trials) / max(1, len(trials))
+
+
+def peak_human_cases_per_hour(trials):
+    """Vận hành: số ca cần người nhiều nhất trong một giờ của một ngày chạy."""
+    counts = {}
+    for t in trials:
+        if t["review_kind"] or t["status"] == "escalated":
+            key = (t["seed"], (t["arrive_min"] or 0) // 60)
+            counts[key] = counts.get(key, 0) + 1
+    return max(counts.values(), default=0)
+
+
+def avg_cost_per_ticket_vnd(trials):
+    """Kinh doanh: tiền LLM và nền tảng trung bình cho một ticket."""
+    return sum(t["cost_vnd"] for t in trials) / max(1, len(trials))
+
+
 MONITORS = {
     "escalation_rate": escalation_rate,     # có sẵn; KHÔNG tính là metric mới của đội
+    "risk_signal_rate": risk_signal_rate,
+    "peak_human_cases_per_hour": peak_human_cases_per_hour,
+    "avg_cost_per_ticket_vnd": avg_cost_per_ticket_vnd,
 }
 STARTER_MONITORS = ("escalation_rate",)
